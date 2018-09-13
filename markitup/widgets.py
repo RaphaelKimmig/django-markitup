@@ -16,7 +16,7 @@ except ImportError:
 
 
 class MarkupInput(forms.Widget):
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if value is not None:
             # Special handling for MarkupField value.
             # This won't touch simple TextFields because they don't have
@@ -25,7 +25,7 @@ class MarkupInput(forms.Widget):
                 value = value.raw
             except AttributeError:
                 pass
-        return super(MarkupInput, self).render(name, value, attrs)
+        return super(MarkupInput, self).render(name, value, attrs, renderer)
 
 
 class MarkupTextarea(MarkupInput, forms.Textarea):
@@ -73,7 +73,7 @@ class MarkItUpWidget(MarkupTextarea):
             js=js_media)
     media = property(_media)
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         html = super(MarkItUpWidget, self).render(name, value, attrs)
 
         # Passing base_attrs as a kwarg for compatibility with Django < 1.11
